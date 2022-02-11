@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: movies-api-service
+  namespace: #{namespace}#
+spec:
+  selector:
+    app: movies-api
+  ports:
+    - name: tcp-movies-api-service
+      protocol: TCP
+      port: 80    

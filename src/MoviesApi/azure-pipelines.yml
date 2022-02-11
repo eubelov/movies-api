@@ -1,0 +1,63 @@
+trigger:
+  branches:
+    include:
+      - master
+
+resources:
+  - repo: self
+
+variables:
+  dockerRegistryServiceConnection: 'a7d22a2a-e007-4f2f-861f-21680d3dd425'
+  imageRepository: 'webjet_movies_api'
+  containerRegistry: 'devuntrap.azurecr.io'
+  dockerfilePath: '$(Build.SourcesDirectory)/src/MoviesApi/Dockerfile'
+  tag: '$(Build.BuildId)'
+  buildContext: '$(Build.SourcesDirectory)/src/MoviesApi/'
+
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+
+stages:
+  - stage: Test
+    jobs:
+      - job: UnitTest
+        displayName: Run Unit Tests
+        pool:
+          vmImage: $(vmImageName)
+        steps:
+          - task: UseDotNet@2
+            inputs:
+              packageType: 'sdk'
+              version: '6.0.x'
+          
+          - task: DotNetCoreCLI@2
+            inputs:
+              command: 'test'
+              projects: '*.csproj' 
+
+  - stage: Build
+    displayName: Build and push stage
+    jobs:
+      - job: Build
+        displayName: Build
+        pool:
+          vmImage: $(vmImageName)
+        steps:
+          - task: UseDotNet@2
+            inputs:
+              packageType: 'sdk'
+              version: '6.0.x'
+          - task: Docker@2
+            displayName: Build and push an image to container registry
+            inputs:
+              command: buildAndPush
+              repository: $(imageRepository)
+              dockerfile: $(dockerfilePath)
+              containerRegistry: $(dockerRegistryServiceConnection)
+              buildContext: $(buildContext)
+              tags: |
+                $(tag)
+                latest
+
+          - upload: $(Build.SourcesDirectory)/manifests
+            artifact: manifests

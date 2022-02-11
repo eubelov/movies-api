@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: movies-api
+  namespace: #{namespace}#
+  labels:
+    app: movies-api
+spec:
+  replicas: #{replicas}#
+  selector:
+    matchLabels:
+      app: movies-api
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      labels:
+        app: movies-api
+    spec:
+      containers:
+        - name: movies-api
+          image: devuntrap.azurecr.io/webjet_movies_api:#{build.buildid}#
+          ports:
+            - containerPort: 80          
+          resources:
+            requests:
+              memory: #{memory_request}#
+              cpu: #{cpu_request}#
+            limits:
+              memory: #{memory_limit}#
+              cpu: #{cpu_limit}#
+          envFrom:
+            - configMapRef:
+                name: movies-api-configmap
+               
+          env:
+            - name: AzureServicesAuthConnectionString
+              valueFrom:
+                secretKeyRef:
+                  name: movies-api-secrets
+                  key: azureservicesauthconnectionstring
