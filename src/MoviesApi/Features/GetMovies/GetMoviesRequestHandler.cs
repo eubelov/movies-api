@@ -18,15 +18,19 @@ internal sealed class GetMoviesRequestHandler : IRequestHandler<GetMoviesRequest
 
     private readonly IPolicyRegistry<string> policyRegistry;
 
+    private readonly ILogger<GetMoviesRequestHandler> logger;
+
     private readonly DataSourcesConfig options;
 
     public GetMoviesRequestHandler(
         IHttpClientFactory httpClientFactory,
         IOptions<DataSourcesConfig> options,
-        IPolicyRegistry<string> policyRegistry)
+        IPolicyRegistry<string> policyRegistry,
+        ILogger<GetMoviesRequestHandler> logger)
     {
         this.httpClientFactory = httpClientFactory;
         this.policyRegistry = policyRegistry;
+        this.logger = logger;
         this.options = options.Value;
     }
 
@@ -72,21 +76,32 @@ internal sealed class GetMoviesRequestHandler : IRequestHandler<GetMoviesRequest
     {
         var cachePolicy = this.policyRegistry.Get<AsyncCachePolicy<GetMoviesResponse.Movie?>>($"ItemCachingPolicy@{clientName}");
 
-        return await cachePolicy.ExecuteAsync(
-                   _ => client.GetFromJsonAsync<GetMoviesResponse.Movie>(string.Format(movieInfoUrl, movieId), token),
-                   new Context($"movie_info@{movieId}"));
+        var result = await cachePolicy.ExecuteAndCaptureAsync(
+                         _ => client.GetFromJsonAsync<GetMoviesResponse.Movie>(string.Format(movieInfoUrl, movieId), token),
+                         new Context($"movie_info@{movieId}"));
+
+        if (result.Outcome is OutcomeType.Failure)
+        {
+            this.logger.LogWarning(result.FinalException, $"Failed to get movie {movieId} from data source {clientName}");
+        }
+
+        return result.Result;
     }
 
     private async Task<GetMoviesListResponse> LoadMoviesList(HttpClient client, string clientName, string listUrl, CancellationToken token)
     {
         var cachePolicy = this.policyRegistry.Get<AsyncCachePolicy<GetMoviesListResponse>>($"ListCachingPolicy@{clientName}");
 
-        return await cachePolicy.ExecuteAsync(
-                   async _ =>
-                       {
-                           var list = await client.GetFromJsonAsync<GetMoviesListResponse>(listUrl, token);
-                           return list ?? new GetMoviesListResponse();
-                       },
-                   new Context($"movies_list@{clientName}"));
+        var result = await cachePolicy.ExecuteAndCaptureAsync(
+                         _ => client.GetFromJsonAsync<GetMoviesListResponse>(listUrl, token)!,
+                         new Context($"movies_list@{clientName}"));
+
+        if (result.Outcome is OutcomeType.Failure)
+        {
+            this.logger.LogWarning(result.FinalException, $"Failed to get movies list from data source {clientName}");
+            return new();
+        }
+
+        return result.Result;
     }
 }

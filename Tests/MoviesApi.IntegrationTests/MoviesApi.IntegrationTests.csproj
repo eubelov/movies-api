@@ -5,6 +5,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <UserSecretsId>c7c408c3-a67d-43a7-931b-e0b78cea7b52</UserSecretsId>
+    <AssemblyName>MoviesApi.IntegrationTests</AssemblyName>
+    <RootNamespace>MoviesApi.IntegrationTests</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -13,13 +15,14 @@
 
   <ItemGroup>
     <PackageReference Include="Bogus" Version="34.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.1">
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
+    <PackageReference Include="WireMock.Net" Version="1.4.35" />
     <PackageReference Include="xunit" Version="2.4.2-pre.12" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
       <PrivateAssets>all</PrivateAssets>
@@ -32,13 +35,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ProductsApi\ProductsApi.csproj" />
+    <ProjectReference Include="..\..\src\MoviesApi\MoviesApi.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="AppData\products_sut.db">
+    <Content Include="appsettings.sut.json">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

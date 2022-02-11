@@ -19,7 +19,7 @@ public sealed class HttpResponseExceptionFilter : IAsyncActionFilter
             return;
         }
 
-        this.logger.LogError(result.Exception, "Unhandled exception occured");
+        this.logger.LogError(result.Exception, "Unhandled exception occurred");
 
         result.Result = HttpResponseFactory.UnknownErrorResponse();
         result.ExceptionHandled = true;

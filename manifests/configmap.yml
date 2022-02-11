@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: movies-api-configmap
+  namespace: #{namespace}#
+data:
+  APPINSIGHTS_INSTRUMENTATIONKEY: "#{appInsightsKey}#"
+  
+  DataSourcesConfig__DataSources__0__Name: "cinemaworld"
+  DataSourcesConfig__DataSources__0__BaseUrl: "http://webjetapitest.azurewebsites.net"
+  DataSourcesConfig__DataSources__0__ListRoute: "/api/cinemaworld/movies"
+  DataSourcesConfig__DataSources__0__DetailsRoute: "/api/cinemaworld/movie/{0}"
+  DataSourcesConfig__DataSources__0__MaxConcurrency: "5"
+  DataSourcesConfig__DataSources__0__Timeout: "00:00:05"
+  DataSourcesConfig__DataSources__0__CacheTtl: "#{cacheTtl1}#"
+  
+  DataSourcesConfig__DataSources__1__Name: "filmworld"
+  DataSourcesConfig__DataSources__1__BaseUrl: "http://webjetapitest.azurewebsites.net"
+  DataSourcesConfig__DataSources__1__ListRoute: "/api/filmworld/movies"
+  DataSourcesConfig__DataSources__1__DetailsRoute: "/api/filmworld/movie/{0}"
+  DataSourcesConfig__DataSources__1__MaxConcurrency: "10"
+  DataSourcesConfig__DataSources__1__Timeout: "00:00:03"
+  DataSourcesConfig__DataSources__1__CacheTtl: "#{cacheTtl2}#"
+  
+  KeyVault__Enabled: "true"
+  KeyVault__Url: "https://movies-api.vault.azure.net/"
+
+  TZ: "Pacific/Auckland"

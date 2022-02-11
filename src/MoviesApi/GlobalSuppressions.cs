@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("MoviesApi.UnitTests")]
 [assembly: InternalsVisibleTo("MoviesApi.IntegrationTests")]
 
 [assembly: SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1602:Enumeration items should be documented", Justification = "Ok here")]

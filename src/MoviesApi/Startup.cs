@@ -5,9 +5,9 @@ using CorrelationId.DependencyInjection;
 
 using MediatR;
 
-using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.ApplicationInsights.Channel;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Extensions.Options;
-using Microsoft.OpenApi.Models;
 
 using MoviesApi.Features.GetMovies;
 using MoviesApi.Metrics;
@@ -64,8 +64,8 @@ public class Startup
         app.UseSerilogRequestLogging();
         app.UseMetricServer();
         app.UseHttpMetrics();
-        app.UseCors("AllowAll");
         app.UseRouting();
+        app.UseCors("AllowAll");
 
         app.UseSwagger();
         app.UseSwaggerUI(
@@ -88,6 +88,7 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddApplicationInsightsTelemetry();
         services.AddMediatR(typeof(Startup).Assembly);
         services.AddMemoryCache();
         services.AddSingleton<IAsyncCacheProvider, MemoryCacheProvider>();
@@ -95,6 +96,11 @@ public class Startup
         services.AddOptions();
 
         services.Configure<DataSourcesConfig>(this.configuration.GetSection(nameof(DataSourcesConfig)));
+        services.Configure<TelemetryConfiguration>(
+            config =>
+                {
+                    config.TelemetryChannel = new InMemoryChannel();
+                });
 
         services.AddApiVersioning(
             options =>
@@ -109,7 +115,7 @@ public class Startup
                 {
                     x.RequestHeader = "X-CorrelationId";
                     x.AddToLoggingScope = true;
-                    x.IncludeInResponse = false;
+                    x.IncludeInResponse = true;
                 });
 
         services.AddCors(
@@ -137,30 +143,6 @@ public class Startup
         services.AddSwaggerGen(
             c =>
                 {
-                    c.CustomSchemaIds(x => x.FullName);
-
-                    c.AddSecurityDefinition(
-                        "ApiKey",
-                        new()
-                        {
-                            In = ParameterLocation.Header,
-                            Description = "Please insert your API token",
-                            Name = "Authorization",
-                            Type = SecuritySchemeType.ApiKey,
-                        });
-
-                    c.AddSecurityRequirement(
-                        new()
-                        {
-                            {
-                                new()
-                                {
-                                    Reference = new() { Type = ReferenceType.SecurityScheme, Id = "ApiKey" },
-                                },
-                                Array.Empty<string>()
-                            },
-                        });
-
                     c.SwaggerDoc(
                         "v1",
                         new()
@@ -172,23 +154,6 @@ public class Startup
                     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                     c.IncludeXmlComments(xmlPath);
-
-                    c.TagActionsBy(
-                        api =>
-                            {
-                                if (api.GroupName != null)
-                                {
-                                    return new[] { api.GroupName };
-                                }
-
-                                if (api.ActionDescriptor is ControllerActionDescriptor controllerActionDescriptor)
-                                {
-                                    return new[] { controllerActionDescriptor.ControllerName };
-                                }
-
-                                throw new InvalidOperationException("Unable to determine tag for endpoint.");
-                            });
-
                     c.DocInclusionPredicate((_, _) => true);
                 });
 
