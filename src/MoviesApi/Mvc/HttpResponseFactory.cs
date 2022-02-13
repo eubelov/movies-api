@@ -11,7 +11,7 @@ public class HttpResponseFactory
             Status = StatusCodes.Status500InternalServerError,
             Detail = "Unexpected error occurred",
             Title = "Unexpected Error",
-            Type = "https://movies.com/api/unexpected-error",
+            Type = "https://movies-ui.untrap.net/api/unexpected-error",
         };
 
         return new(problem)
