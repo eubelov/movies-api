@@ -5,13 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c435c724-45c4-488e-b2f2-3147de2b5cd2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/MoviesApi/Mvc/Extensions/GlobalRouteConvention.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Tests/MoviesApi.IntegrationTests/Utils/DataSourceExtensions.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Movies/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Movies/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MoviesApi/Features/GetMovies/GetMoviesResponse.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MoviesApi/Features/GetMovies/GetMoviesResponse.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MoviesApi/Metrics/ApiMetrics.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MoviesApi/Metrics/ApiMetrics.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MoviesApi/Mvc/Extensions/MvcOptionsRouteExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MoviesApi/Mvc/Extensions/MvcOptionsRouteExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MoviesApi/Mvc/HttpResponseFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MoviesApi/Mvc/HttpResponseFactory.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MoviesApi/Options/DataSourcesConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MoviesApi/Options/DataSourcesConfig.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/MoviesApi.IntegrationTests/Endpoints/GetMoviesTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/MoviesApi.IntegrationTests/Endpoints/GetMoviesTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/MoviesApi.IntegrationTests/Utils/FakersFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/MoviesApi.IntegrationTests/Utils/FakersFactory.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/MoviesApi.IntegrationTests/appsettings.sut.json" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/MoviesApi.IntegrationTests/appsettings.sut.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,6 +23,9 @@
       <filtered-out-file-type name="TAG" />
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/20cc1582e9fbc98feaf75da18e68e12aa434ac9030b0f9cf6f9a302899dc/IDelayResponseBuilder.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -70,7 +71,7 @@
       <option name="presentableId" value="Default" />
       <updated>1644656033324</updated>
       <workItem from="1644656078302" duration="2518000" />
-      <workItem from="1644713430904" duration="1095000" />
+      <workItem from="1644713430904" duration="4526000" />
     </task>
     <servers />
   </component>

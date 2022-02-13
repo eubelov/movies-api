@@ -8,8 +8,6 @@ public static class FakersFactory
 {
     public static Faker<GetMoviesResponse.Movie> GetMovieFaker()
     {
-        var titles = new[] { "Title 1", "Title2", "Title 3" };
-
         var faker = new Faker<GetMoviesResponse.Movie>();
 
         faker
@@ -24,12 +22,10 @@ public static class FakersFactory
             .RuleFor(x => x.Rated, x => x.Lorem.Word())
             .RuleFor(x => x.Released, x => x.Lorem.Word())
             .RuleFor(x => x.Runtime, x => x.Lorem.Word())
-            .RuleFor(x => x.Title, x => x.PickRandom(titles))
             .RuleFor(x => x.Type, x => x.Lorem.Word())
             .RuleFor(x => x.Votes, x => x.Lorem.Word())
             .RuleFor(x => x.Writer, x => x.Lorem.Word())
-            .RuleFor(x => x.Price, x => x.Random.Decimal())
-            .RuleFor(x => x.ID, x => x.Lorem.Word());
+            .RuleFor(x => x.Price, x => x.Random.Decimal());
 
         return faker;
     }
